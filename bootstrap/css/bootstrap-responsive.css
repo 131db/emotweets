@@ -1107,3 +1107,11 @@
     overflow: visible !important;
   }
 }
+
+/* ADDED STYLES */
+
+.searchPanel {
+
+  text-align: center;
+  
+}
