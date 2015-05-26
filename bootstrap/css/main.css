@@ -1,0 +1,40 @@
+.searchPanel {
+
+	font-size: 3em;
+
+}
+
+body {
+
+	margin-top: 5% !important;
+
+}
+
+.twitterFeed {
+
+	height: 28em;
+	overflow: auto;
+
+}
+
+.bigform {
+
+	height: 4em;
+	font-size: 70%;
+	width: 88% !important;
+
+}
+
+.bigbtn {
+
+	width: 10%;
+	height: 3.5em;
+	font-size: 0.8em;
+	letter-spacing: 0.1em;
+}
+
+.bigGroup {
+
+	width: 100%;
+
+}
