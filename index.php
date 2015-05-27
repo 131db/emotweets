@@ -33,9 +33,9 @@
         <!-- START COL-XS-1 -->
       </div>
       <!-- END ROW 1 -->
-		
+
 		<br>
-		
+
       <!-- START ROW 2 -->
       <div class="row">
 
@@ -44,17 +44,18 @@
 
           <!-- START EMOTION GRAPH -->
           <div class="emotionGraph">
-			
-			<div class="panel panel-default">
-				<div class="panel-body">
-				
-					<h2>Statistics</h2>
-					<p>Emotion graphs here</p>
-					
-				</div>
-			</div>
-			
-			
+
+            <div class="panel panel-default">
+
+              <div class="panel-body">
+
+                <h2>Statistics</h2>
+					      <p>Emotion graphs here</p>
+
+				      </div>
+
+			      </div>
+
           </div>
           <!-- END EMOTION GRAPH -->
 
@@ -65,74 +66,59 @@
         <div class="col-md-7">
           <!-- START TWITTER FEED -->
           <div class="twitterFeed">
-		  
-			<table class="table table-hover">
-				
-				<tr>
-				
-					<th>Sentiment</th>
-					<th>Tweet</th>
-				
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-success">Positive</span></td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-						
-					</td>
-					
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-danger">Negative</span>
-					</td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-					</td>
-					
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-success">Positive</span></td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-						
-					</td>
-					
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-danger">Negative</span>
-					</td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-					</td>
-					
-				</tr>
-				
-			</table>
-		  
+            <!-- START TABLE -->
+            <table class="table table-hover">
+
+              <tr>
+                <th>Sentiment</th>
+                <th>Tweet</th>
+
+				      </tr>
+
+              <?php
+
+                require ('C:\xampp\htdocs\emotweets\ouath\autoload.php');
+                require_once ('C:\xampp\htdocs\emotweets\ouath\src\TwitterOAuth.php');
+                use Abraham\TwitterOAuth\TwitterOAuth;
+
+                define('CONSUMER_KEY', 'lIHWDWkKCzjthlWYzhvcvvZ8H');
+                define('CONSUMER_SECRET', 'gvF4DvAvWsnBndtIw3emMJvu6pTbuD0U6yVQSVqpQneaqZRnjY');
+                define('ACCESS_TOKEN', '507359545-VeXYNUAxRg2O5HCHBktXLFYsXb61dXxGNN6OCP24');
+                define('ACCESS_TOKEN_SECRET', 'lLzjhH3P3YEsimf2slfYKpn0geZK3bRAW6fLJb8sNrUPx');
+                $toa = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+
+                $query = array("q"=>"#Marvel");
+
+                $results = $toa->get('search/tweets', $query);
+
+                foreach ($results->statuses as $result) {
+
+                  $sentiment = 'Positive'; // CHANGE THIS WHEN SENTIMENT ANALYSIS IS APPLIED
+
+                  echo '<tr>
+
+                    <td>
+                      <br><br>
+                      <span class="label label-success">' . $sentiment . '</span>
+                    </td>
+
+    					      <td>
+
+                      <h3>' . $result->user->screen_name . '</h3>
+    						      <p>' . $result->text . '</p>
+
+    					      </td>
+
+    				      </tr>';
+
+                  //echo $result->user->screen_name . ": " . $result->text . "\n";
+
+                }
+
+              ?>
+
+			      </table>
+            <!-- END TABLE -->
 
           </div>
           <!-- END TWITTER FEED -->
