@@ -5,7 +5,37 @@
 
     <!-- STYLESHEETS -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-	<link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
+	  <link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
+
+    <!-- SCRIPTS -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/
+libs/jquery/1.3.0/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+    $(function() {
+
+      $(".submit").click(function() {
+
+        var tag = $("#hashtag").val();
+
+        if(tag != '') {
+
+          $.ajax({
+
+            type: "POST";
+            data: tag;
+
+
+          });
+
+        }
+
+      });
+
+    });
+
+    </script>
 
   </head>
   <body>
@@ -75,47 +105,21 @@
 
 				      </tr>
 
-              <?php
-
-                require ('C:\xampp\htdocs\emotweets\ouath\autoload.php');
-                require_once ('C:\xampp\htdocs\emotweets\ouath\src\TwitterOAuth.php');
-                use Abraham\TwitterOAuth\TwitterOAuth;
-
-                define('CONSUMER_KEY', 'lIHWDWkKCzjthlWYzhvcvvZ8H');
-                define('CONSUMER_SECRET', 'gvF4DvAvWsnBndtIw3emMJvu6pTbuD0U6yVQSVqpQneaqZRnjY');
-                define('ACCESS_TOKEN', '507359545-VeXYNUAxRg2O5HCHBktXLFYsXb61dXxGNN6OCP24');
-                define('ACCESS_TOKEN_SECRET', 'lLzjhH3P3YEsimf2slfYKpn0geZK3bRAW6fLJb8sNrUPx');
-                $toa = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
-
-                $query = array("q"=>"#Marvel");
-
-                $results = $toa->get('search/tweets', $query);
-
-                foreach ($results->statuses as $result) {
-
-                  $sentiment = 'Positive'; // CHANGE THIS WHEN SENTIMENT ANALYSIS IS APPLIED
-
-                  echo '<tr>
+              <tr>
 
                     <td>
                       <br><br>
-                      <span class="label label-success">' . $sentiment . '</span>
+                      <span class="label label-success"> . $sentiment . </span>
                     </td>
 
     					      <td>
 
-                      <h3>' . $result->user->screen_name . '</h3>
-    						      <p>' . $result->text . '</p>
+                      <h3>. $result->user->screen_name .</h3>
+    						      <p>. $result->text .</p>
 
     					      </td>
 
-    				      </tr>';
-
-                  //echo $result->user->screen_name . ": " . $result->text . "\n";
-
-                }
-
-              ?>
+    				      </tr>
 
 			      </table>
             <!-- END TABLE -->
