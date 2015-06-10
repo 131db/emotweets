@@ -50,5 +50,26 @@
 
   }
 
+  function classifyNew($newTweet) {
+
+    $total = count($newTweet);
+
+    for($i = 0; $i < $total; $i++) {
+
+      // read from file
+
+      if($wordFromBank == $newTweet[$i]) {
+
+        // get prob from file
+
+      }
+      else {
+        // new instance
+      }
+
+    }
+
+  }
+
 
 ?>
