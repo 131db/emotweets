@@ -1,0 +1,7 @@
+<?php
+
+  // NAIVE BAYES IMPLEMENTATION
+
+  
+
+?>
