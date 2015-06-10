@@ -5,4 +5,8 @@
     "abraham/twitteroauth": "0.5.2"
   }
 
+  "require": {
+    "php-nlp-tools-master/nlp-tools": "1.0.*@dev"
+  }
+
 }
