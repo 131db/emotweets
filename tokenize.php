@@ -1,7 +1,7 @@
 <?php
 
   require('connect.php');
-  include ('C:/xampp/htdocs/emotweets/php-nlp-tools-master/php-nlp-tools-master/autoloader.php');
+  include ('/Applications/XAMPP/xamppfiles/htdocs/emotweets/php-nlp-tools-master/php-nlp-tools-master/autoloader.php');
   use \NlpTools\Tokenizers\WhitespaceTokenizer;
 
   /*  SAMPLE TOKENIZER
@@ -19,27 +19,89 @@
   }
   */
 
-  // VOCAB OBJECT
-  class Word {
-
-    public $text;
-    public $pos;
-    public $neg;
-
-  }
-
   // RETRIEVE TWEETS FROM DB
 
-  $query = "SELECT * FROM tweets LIMIT 1"; // FOR TESTING, REMOVE LIMIT 1 TO GET ALL
+  $query = "SELECT * FROM tweets LIMIT 3"; // FOR TESTING, REMOVE LIMIT 1 TO GET ALL
   $result = mysql_query($query);
-
-  $vocab = array();
 
   while($r = mysql_fetch_array($result)) {
 
-    $tokenized = tok($r['tweet']);
-    tallyStore($tokenized, $r['sentiment']);
+    //echo $r['tweet'] . " " . $r['sentiment'] . "<br>"; // WORKS
 
+    $tokenized = tok($r['tweet']); // WORKS
+    tallyStore($tokenized, $r['sentiment']);
+    //displayVocab();
+
+  }
+
+  function getAllVocab() {
+
+    $query = "SELECT * FROM vocab"; // FOR TESTING, REMOVE LIMIT 1 TO GET ALL
+    $result = mysql_query($query);
+
+    return $result;
+
+  }
+
+  function countVocab() {
+
+    $query = "SELECT COUNT(word) AS 'total' FROM vocab"; // FOR TESTING, REMOVE LIMIT 1 TO GET ALL
+    $result = mysql_query($query);
+
+    $r = mysql_fetch_array($result);
+
+    return $r['total'];
+
+  }
+
+  function addToVocab($newWord, $class) {
+
+    if($class == "Positive") {
+
+      $p = 1;
+      $n = 0;
+
+    }
+    elseif($class == "Negative") {
+
+      $p = 0;
+      $n = 1;
+
+    }
+
+    $query = "INSERT INTO vocab values('" . $newWord . "', " . $p . ", " . $n . ");";
+    mysql_query($query);
+
+  }
+
+  function updateVocab($oldWord, $class, $oldTally) {
+
+    if($class == "Positive") {
+
+      $query = "UPDATE vocab SET positiveCount = " . $oldTally . " WHERE word = " . $oldWord . "'";
+
+    }
+    elseif($class == "Negative") {
+
+      $query = "UPDATE vocab SET negativeCount = " . $oldTally . " WHERE word = '" . $oldWord . "'";
+
+    }
+
+    mysql_query($query);
+
+
+  }
+
+  function displayVocab() {
+
+    $query = "SELECT * FROM vocab;";
+    $result = mysql_query($query);
+
+    while($r = mysql_fetch_array($result)) {
+
+      echo $r['word'] . " " . $r['positiveCount'] . " " . $r['negativeCount'] . "<br>";
+
+    }
 
   }
 
@@ -53,69 +115,61 @@
 
   }
 
+
   // TALLY AND STORE
   function tallyStore($t, $class) {
 
     $totalTokens = count($t);
-    $totalVocab = count($vocab);
 
     for($i = 0; $i < $totalTokens; $i++) {
 
-      // CHECK IF ALREADY IN VOCAB
-      for($c = 0; $c < $totalVocab; $c++) {
+        $currentToken = $t[$i];
 
-        $inVocab = 0;
-        $data = new Word();
-        $data = $vocab[$c];
+        $results = getAllVocab();
+        $totalVocab = countVocab();
 
-        if($t == $data->text) {
-
-          // ALREADY IN VOCAB
-          if($class == "Positive") {
-
-            $data->pos = $data->pos + 1;
-
-          }
-          elseif($class == "Negative") {
-
-            $data->neg = $data->neg + 1;
-
-          }
-
-          $vocab[$c] = $data;
-          $inVocab = 1;
+        if($totalVocab == 0) {
+          // EMPTY VOCAB, ADD ALL TOKENS
+          addToVocab($currentToken, $class);
 
         }
-        // END OUTER IF
+        else {
 
-        if($inVocab == 0) {
+          $inVocab = 0;
+          // CHECK AND COMPARE TO VOCAB CONTENTS
+          while($r = mysql_fetch_array($results)) {
 
-          // NOT IN VOCAB
-          $obj = new Word();
-          if($class == "Positive") {
+            if($currentToken == $r['word']) {
 
-            $obj->pos = 1;
-            $obj->neg = 0;
+              // MATCH, UPDATE FOR CLASS;
+
+              $inVocab = 1;
+              if($class == "Positive") {
+
+                updateVocab($currentToken, $class, $r['positiveCount']);
+
+              }
+              else if($class == "Negative") {
+
+                updateVocab($currentToken, $class, $r['negativeCount']);
+
+              }
+
+
+            }
 
           }
-          elseif($class == "Negative") {
 
-            $obj->pos = 0;
-            $obj->neg = 1;
+          if($inVocab == 0) {
+
+            addToVocab($currentToken, $class);
 
           }
-
-          $vocab[$totalVocab] = $obj;
-          $totalVocab++;
 
         }
-
-      }
-      // END INNER FOR LOOP
-
-    }
-    // END OUTER FOR LOOP
 
   }
+
+}
 
 ?>
