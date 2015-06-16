@@ -5,7 +5,37 @@
 
     <!-- STYLESHEETS -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-	<link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
+	  <link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
+
+    <!-- SCRIPTS -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/
+libs/jquery/1.3.0/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+    $(function() {
+
+      $(".submit").click(function() {
+
+        var tag = $("#hashtag").val();
+
+        if(tag != '') {
+
+          $.ajax({
+
+            type: "POST";
+            data: tag;
+
+
+          });
+
+        }
+
+      });
+
+    });
+
+    </script>
 
   </head>
   <body>
@@ -33,9 +63,9 @@
         <!-- START COL-XS-1 -->
       </div>
       <!-- END ROW 1 -->
-		
+
 		<br>
-		
+
       <!-- START ROW 2 -->
       <div class="row">
 
@@ -44,17 +74,18 @@
 
           <!-- START EMOTION GRAPH -->
           <div class="emotionGraph">
-			
-			<div class="panel panel-default">
-				<div class="panel-body">
-				
-					<h2>Statistics</h2>
-					<p>Emotion graphs here</p>
-					
-				</div>
-			</div>
-			
-			
+
+            <div class="panel panel-default">
+
+              <div class="panel-body">
+
+                <h2>Statistics</h2>
+					      <p>Emotion graphs here</p>
+
+				      </div>
+
+			      </div>
+
           </div>
           <!-- END EMOTION GRAPH -->
 
@@ -65,74 +96,33 @@
         <div class="col-md-7">
           <!-- START TWITTER FEED -->
           <div class="twitterFeed">
-		  
-			<table class="table table-hover">
-				
-				<tr>
-				
-					<th>Sentiment</th>
-					<th>Tweet</th>
-				
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-success">Positive</span></td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-						
-					</td>
-					
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-danger">Negative</span>
-					</td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-					</td>
-					
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-success">Positive</span></td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-						
-					</td>
-					
-				</tr>
-				
-				<tr>
-				
-					<td>
-						<br><br>
-						<span class="label label-danger">Negative</span>
-					</td>
-					
-					<td>
-						<h3>User</h3>
-						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-					</td>
-					
-				</tr>
-				
-			</table>
-		  
+            <!-- START TABLE -->
+            <table class="table table-hover">
+
+              <tr>
+                <th>Sentiment</th>
+                <th>Tweet</th>
+
+				      </tr>
+
+              <tr>
+
+                    <td>
+                      <br><br>
+                      <span class="label label-success"> . $sentiment . </span>
+                    </td>
+
+    					      <td>
+
+                      <h3>. $result->user->screen_name .</h3>
+    						      <p>. $result->text .</p>
+
+    					      </td>
+
+    				      </tr>
+
+			      </table>
+            <!-- END TABLE -->
 
           </div>
           <!-- END TWITTER FEED -->
