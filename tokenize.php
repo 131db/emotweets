@@ -27,7 +27,6 @@
   $query = "SELECT * FROM tweets LIMIT 1"; // FOR TESTING, REMOVE LIMIT 1 TO GET ALL
   $result = mysql_query($query);
 
-
   while($r = mysql_fetch_array($result)) {
 
     //echo $r['tweet'] . " " . $r['sentiment'] . "<br>"; // WORKS
@@ -38,8 +37,6 @@
     //displayVocab();
 
   }
-
-
 
   function getAllVocab() {
 
@@ -200,6 +197,15 @@
 
   }
 
+  function checkPlural($word) {
+
+    $result = exec('python getSingular.py ' . escapeshellarg(json_encode($word)));
+
+    $resultData = json_decode($result, true);
+
+    return $resultData;
+
+  }
 
   // TALLY AND STORE
   function tallyStore($t, $class) {
@@ -212,6 +218,8 @@
 
         $results = getAllVocab();
         $totalVocab = countVocab();
+
+        $currentToken = checkPlural($currentToken);
 
         if($currentToken == "'m" || $currentToken == "'ve" || $currentToken == "'d" || $currentToken == "'s" || $currentToken == "'re") {
 
