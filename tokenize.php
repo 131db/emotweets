@@ -23,20 +23,24 @@
   */
 
   // RETRIEVE TWEETS FROM DB
-
-  $query = "SELECT * FROM tweets LIMIT 1"; // FOR TESTING, REMOVE LIMIT 1 TO GET ALL
+  // READY FOR NEXT
+  $query = "SELECT * FROM tweets WHERE tweetID >= 151 AND tweetID <= 200";
   $result = mysql_query($query);
+
+  $counter = 0;
 
   while($r = mysql_fetch_array($result)) {
 
-    //echo $r['tweet'] . " " . $r['sentiment'] . "<br>"; // WORKS
-
+    echo $r['tweetID'] . "<br>"; // WORKS
     $tokenized = tok(strtolower($r['tweet'])); // WORKS
+    $tokenized = iterateClean($tokenized);
     $tokenized = checkNegation($tokenized);
     tallyStore($tokenized, $r['sentiment']);
+
     //displayVocab();
 
   }
+  echo "end";
 
   function getAllVocab() {
 
@@ -81,6 +85,13 @@
 
     return $tokenized;
 
+
+  }
+
+  function checkStart($word, $start) {
+
+    $length = strlen($word);
+    return (substr($word, 0, $length) === $start);
 
   }
 
@@ -145,9 +156,13 @@
   // UPDATES VOCAB IF WORD ALREADY EXISTS
   function updateVocab($oldWord, $class, $oldTally) {
 
+    //echo "update " . $oldWord . "<br>";
+
+    $oldTally++;
+
     if($class == "Positive") {
 
-      $query = "UPDATE vocab SET positiveCount = " . $oldTally . " WHERE word = " . $oldWord . "'";
+      $query = "UPDATE vocab SET positiveCount = " . $oldTally . " WHERE word = '" . $oldWord . "'";
 
     }
     elseif($class == "Negative") {
@@ -187,6 +202,17 @@
       "/\./",
       "/\?/",
       "/\!/",
+      "/\(/",
+      "/\)/",
+      "/\&/",
+      "/\-/",
+      "/\//",
+      "/:/",
+      "/;/",
+      "/\^/",
+      "/\#/",
+      "/\$/",
+      "/\"/",
       "/ /"
 
     ));
@@ -195,6 +221,27 @@
 
     return $x;
 
+  }
+
+  function clean($word) {
+
+    $word = preg_replace('/[^a-z0-9]/', '', $word);
+    $word = preg_replace('/[\*]+/', '', $word);
+    return trim($word, '-');
+
+  }
+
+  function iterateClean($tokens) {
+
+    $total = count($tokens);
+
+    for($i = 0 ; $i < $total; $i++){
+
+      $tokens[$i] = clean($tokens[$i]);
+
+    }
+
+    return $tokens;
   }
 
   function checkPlural($word) {
@@ -221,48 +268,58 @@
 
         $currentToken = checkPlural($currentToken);
 
-        if($currentToken == "'m" || $currentToken == "'ve" || $currentToken == "'d" || $currentToken == "'s" || $currentToken == "'re") {
+        if(checkStart($currentToken,"'")) {
+          $currentToken = substr($currentToken, 1, strlen($currentToken));
+        }
+
+        if(preg_match('/[0-9]+/', $currentToken) || $currentToken == "'" || $currentToken == "'m" || $currentToken == "'ve" || $currentToken == "'d" || $currentToken == "'s" || $currentToken == "'re") {
 
           // do nothing;
-
-        }
-        else if($totalVocab == 0) {
-          // EMPTY VOCAB, ADD ALL TOKENS
-          addToVocab($currentToken, $class);
 
         }
         else {
 
           $inVocab = 0;
-          // CHECK AND COMPARE TO VOCAB CONTENTS
-          while($r = mysql_fetch_array($results)) {
-
-            if($currentToken == $r['word']) {
-
-              // MATCH, UPDATE FOR CLASS;
-
-              $inVocab = 1;
-              if($class == "Positive") {
-
-                updateVocab($currentToken, $class, $r['positiveCount']);
-
-              }
-              else if($class == "Negative") {
-
-                updateVocab($currentToken, $class, $r['negativeCount']);
-
-              }
-
-
-            }
-
-          }
-
-          if($inVocab == 0) {
-
+          if($totalVocab == 0) {
+            // EMPTY VOCAB, ADD ALL TOKENS
             addToVocab($currentToken, $class);
 
           }
+          else {
+
+            // CHECK AND COMPARE TO VOCAB CONTENTS
+            while($r = mysql_fetch_array($results)) {
+
+
+              if($currentToken == $r['word']) {
+
+                // MATCH, UPDATE FOR CLASS;
+                //echo "match, update " . $currentToken . "<br>";
+                $inVocab = 1;
+                if($class == "Positive") {
+
+                  updateVocab($currentToken, $class, $r['positiveCount']);
+
+                }
+                else if($class == "Negative") {
+
+                  updateVocab($currentToken, $class, $r['negativeCount']);
+
+                }
+
+
+              }
+
+            }
+
+            if($inVocab == 0) {
+
+              addToVocab($currentToken, $class);
+
+            }
+
+
+        }
 
         }
 
