@@ -23,8 +23,7 @@
   */
 
   // RETRIEVE TWEETS FROM DB
-  // READY FOR NEXT
-  $query = "SELECT * FROM tweets WHERE tweetID >= 151 AND tweetID <= 200";
+  $query = "SELECT * FROM tweets WHERE tweetID >= 1401 AND tweetID <= 1500";
   $result = mysql_query($query);
 
   $counter = 0;
@@ -210,7 +209,6 @@
       "/:/",
       "/;/",
       "/\^/",
-      "/\#/",
       "/\$/",
       "/\"/",
       "/ /"
@@ -272,7 +270,7 @@
           $currentToken = substr($currentToken, 1, strlen($currentToken));
         }
 
-        if(preg_match('/[0-9]+/', $currentToken) || $currentToken == "'" || $currentToken == "'m" || $currentToken == "'ve" || $currentToken == "'d" || $currentToken == "'s" || $currentToken == "'re") {
+        if(preg_match('/[0-9]+/', $currentToken) || $currentToken == " " || $currentToken == "" || $currentToken == "'" || $currentToken == "'m" || $currentToken == "'ve" || $currentToken == "'d" || $currentToken == "'s" || $currentToken == "'re") {
 
           // do nothing;
 
