@@ -16,11 +16,33 @@
 	else {
 
 		$d = mysql_select_db($db, $con);
-		if(!$db) {
+		if(!$d) {
 
-			die(mysql_error());
+			//die(mysql_error());
+			$temp = "";
+
+		  $text = file($sqlFile);
+
+		  foreach ($text as $line) {
+
+		    if(substr($line, 0, 2) == "--" || $line == "")
+		      continue;
+
+		    $temp .= $line;
+
+		    if(substr(trim($line), -1, 1) == ";") {
+
+		      mysql_query($temp) or print ("Error");
+		      $temp = "";
+
+		    }
+
+		  }
+
+			mysql_select_db($db, $con);
 
 		}
+
 
 	}
 
