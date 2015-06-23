@@ -23,10 +23,8 @@
   */
 
   // RETRIEVE TWEETS FROM DB
-  $query = "SELECT * FROM tweets WHERE tweetID >= 1401 AND tweetID <= 1500";
+  $query = "SELECT * FROM tweets WHERE tweetID >= 2401 AND tweetID <= 2500";
   $result = mysql_query($query);
-
-  $counter = 0;
 
   while($r = mysql_fetch_array($result)) {
 
