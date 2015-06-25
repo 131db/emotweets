@@ -14,11 +14,10 @@
 		die("Connection failed: " . mysqli_connect_error());
 	}
 	else {
-
 		$d = mysql_select_db($db, $con);
 		if(!$d) {
 
-			//die(mysql_error());
+			die(mysql_error());
 			$temp = "";
 
 		  $text = file($sqlFile);
@@ -39,7 +38,12 @@
 
 		  }
 
-			mysql_select_db($db, $con);
+			$d = mysql_select_db($db, $con);
+			die(mysql_error());
+		}
+		else {
+
+			//echo "Connected successfully";
 
 		}
 
