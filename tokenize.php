@@ -323,4 +323,33 @@
 
 }
 
+  function cleanTweets($tweet) {
+    //Regular Expressions
+    $mention = "/(@\w+)/";
+    $hashtags = "/(#\w+)/";
+    $links = "/(?:https?:\/\/)?(?:[\w]+\.)([a-zA-Z\.]{2,6})([\/\w\.-]*)*\/?/";
+    $smile = "#(^|\W)(\>\:\]|\:-\)|\:\)|\:o\)|\:\]|\:3|\:c\)|\:\>|\=\]|8\)|\=\)|\:\}|\:\^\))($|\W)#";
+    $laugh = "#(^|\W)(\>\:D|\:-D|\:D|8-D|x-D|X-D|\=-D|\=D|\=-3|8-\)|xD|XD|8D|\=3)($|\W)#";
+    $sad = "#(^|\W)(\>\:\[|\:-\(|\:\(|\:-c|\:c|\:-\<|\:-\[|\:\[|\:\{|\>\.\>|\<\.\<|\>\.\<)($|\W)#";
+    $wink = "#(^|\W)(\>;\]|;-\)|;\)|\*-\)|\*\)|;-\]|;\]|;D|;\^\))($|\W)#";
+    $tongue = "#(^|\W)(\>\:P|\:-P|\:P|X-P|x-p|\:-p|\:p|\=p|\:-Þ|\:Þ|\:-b|\:b|\=p|\=P|xp|XP|xP|Xp)($|\W)#";
+    $surprise = "#(^|\W)(\>\:o|\>\:O|\:-O|\:O|°o°|°O°|\:O|o_O|o\.O|8-0)($|\W)#";
+    $annoyed = "#(^|\W)(\>\:\\|\>\:/|\:-/|\:-\.|\:\\|\=/|\=\\|\:S|\:\/)($|\W)#";
+    $cry = "#(^|\W)(\:'\(|;'\()($|\W)#";
+
+    $tweet = preg_replace($mention, "", $tweet);
+    $tweet = preg_replace($links, "", $tweet);
+    $tweet = preg_replace($laugh, "", $tweet);
+    $tweet = preg_replace($smile, "", $tweet);
+    $tweet = preg_replace($sad, "", $tweet);
+    $tweet = preg_replace($wink, "", $tweet);
+    $tweet = preg_replace($tongue, "", $tweet);
+    $tweet = preg_replace($surprise, "", $tweet);
+    $tweet = preg_replace($annoyed, "", $tweet);
+    $tweet = preg_replace($cry, "", $tweet);
+    $tweet = preg_replace($hashtags, "", $tweet);
+
+    return $tweet
+  }
+
 ?>
