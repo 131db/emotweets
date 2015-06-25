@@ -29,7 +29,8 @@
   while($r = mysql_fetch_array($result)) {
 
     echo $r['tweetID'] . "<br>"; // WORKS
-    $tokenized = tok(strtolower($r['tweet'])); // WORKS
+    $cleanedTweet = cleanTweets($tweet);
+    $tokenized = tok(strtolower($cleanedTweet)); // WORKS
     $tokenized = iterateClean($tokenized);
     $tokenized = checkNegation($tokenized);
     tallyStore($tokenized, $r['sentiment']);
