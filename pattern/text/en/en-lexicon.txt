@@ -15,7 +15,7 @@
 ;;;   
 ;;;   Kevin Gimpel, Nathan Schneider, Brendan O'Connor, et al. (2011).
 ;;;   Part-of-Speech Tagging for Twitter: Annotation, Features, and Experiments.
-;;;   In Proceedings of the Annual Meeting of the ACL, Portland, OR, June 2011.
+;;;   In Proceedings of the Annual Meeting of the ACL, Portland, OR, June 2011..
 ;;;   
 ! .
 !! .
