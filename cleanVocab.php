@@ -37,10 +37,10 @@
   function getWithApos($withApos) {
 
     $query = 'SELECT * FROM vocab WHERE word = "' . $withApos . '"';
-    $result = mysql_query($query);
-    if($result) {
+    $result = $con->query($query);
+    if($result->num_rows > 0) {
 
-      if($r = mysql_fetch_array($result)) {
+      if($r = $result->fetch_assoc()) {
         return $r;
 
       }
@@ -53,11 +53,11 @@
 
     // GET W/OUTAPOS VALUES AND SAVE
     $query = "SELECT * FROM vocab WHERE word = '" . $withoutApos . "'";
-    $result = mysql_query($query);
+    $result = $con->query($query);
 
-    if($result) {
+    if($result->num_rows > 0) {
 
-      if($r = mysql_fetch_array($result)) {
+      if($r = $result->fetch_assoc()) {
         //echo $r['word'] . "<br>";
         return $r;
 
@@ -85,16 +85,16 @@
   function updateDB($totalPositive, $totalNegative, $word) {
 
     $query = "UPDATE vocab SET positiveCount = " . $totalPositive . ", negativeCount = " . $totalNegative . " WHERE word = '" . $word . "'";
-    mysql_query($query);
-    $x = mysql_affected_rows();
+    $result = $con->query($query);
+    $x = $result->affected_rows;
     echo $x . "row/s affected";
   }
 
   function deleteWord($word) {
 
     $query = 'DELETE FROM vocab WHERE word = "' . $word . '"';
-    mysql_query($query);
-    $x = mysql_affected_rows();
+    $result = $con->query($query);
+    $x = $result->affected_rows;
     echo $x . "row/s affected for " . $word;
 
   }

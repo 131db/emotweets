@@ -1,7 +1,7 @@
 <?php
 
   require('connect.php');
-  include ('/Applications/XAMPP/xamppfiles/htdocs/emotweets/php-nlp-tools-master/php-nlp-tools-master/autoloader.php');
+  include ('php-nlp-tools-master/php-nlp-tools-master/autoloader.php');
   use \NlpTools\Tokenizers\WhitespaceTokenizer;
   use \NlpTools\Tokenizers\RegexTokenizer;
 
@@ -23,22 +23,23 @@
   */
 
   // RETRIEVE TWEETS FROM DB
-  $query = "SELECT * FROM tweets WHERE tweetID = 2512";
-  $result = mysql_query($query);
-
-  while($r = mysql_fetch_array($result)) {
-
-    echo $r['tweetID'] . "<br>"; // WORKS
-    $cleanedTweet = cleanTweets($tweet);
-    $tokenized = tok(strtolower($cleanedTweet)); // WORKS
-    $tokenized = iterateClean($tokenized);
-    $tokenized = checkNegation($tokenized);
-    tallyStore($tokenized, $r['sentiment']);
-
-    //displayVocab();
-
-  }
-  echo "end";
+  // $query = "SELECT * FROM test_set WHERE tweetID = 1";
+  // $result = $con->query($query);
+  //
+  // while($r = $result->fetch_assoc()) {
+  //
+  //   //echo $r['tweetID'] . "<br>"; // WORKS
+  //   $cleanedTweet = cleanTweets($r["tweet"]);
+  //
+  //   $tokenized = tok(strtolower($cleanedTweet)); // WORKS
+  //   $tokenized = iterateClean($tokenized);
+  //   $tokenized = checkNegation($tokenized);
+  //   //tallyStore($tokenized, $r['sentiment']);
+  //
+  //   //displayVocab();
+  //
+  // }
+  //echo "end";
 
   function getAllVocab() {
 
@@ -318,13 +319,14 @@
             }
 
 
-        }
+          }
 
         }
 
-  }
+      }
+    }
 
-}
+
 
   function cleanTweets($tweet) {
     //Regular Expressions
@@ -352,7 +354,8 @@
     $tweet = preg_replace($cry, "", $tweet);
     $tweet = preg_replace($hashtags, "", $tweet);
 
-    return $tweet
+    return $tweet;
   }
+
 
 ?>
