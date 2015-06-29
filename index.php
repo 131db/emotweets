@@ -23,8 +23,12 @@ libs/jquery/1.3.0/jquery.min.js"></script>
 
           $.ajax({
 
-            type: "POST";
-            data: tag;
+            url:'processInput.php',
+            type: "GET",
+            data: {q: tag},
+            success: function(result) {
+              $('.twitterData').html(result);
+            }
 
 
           });
@@ -50,7 +54,7 @@ libs/jquery/1.3.0/jquery.min.js"></script>
 
           <!-- START SEARCH PANEL -->
           <div class="searchPanel">
-            <form class="form-inline" action="index.html" method="post">
+            <form class="form-inline">
               <div class="form-group bigGroup">
               <input type="text" class="form-control bigform" name="name" id="hashtag" value="" placeholder="Enter hashtag here..">
               <button type="submit" class="btn btn-success bigbtn">GO</button>
@@ -109,13 +113,11 @@ libs/jquery/1.3.0/jquery.min.js"></script>
 
                     <td>
                       <br><br>
-                      <span class="label label-success"> . $sentiment . </span>
+                      <span class="label label-success">Sentiment</span>
                     </td>
 
-    					      <td>
-
-                      <h3>. $result->user->screen_name .</h3>
-    						      <p>. $result->text .</p>
+    					      <td class="twitterData">
+                      <p>Loading Tweets......</p>
 
     					      </td>
 
