@@ -42,7 +42,7 @@
           <!-- START SEARCH PANEL -->
           <div class="searchPanel">
             <!--<form class="form-inline">-->
-              <div class="form-group bigGroup">
+              <div class="form-group bigGroup form-inline">
               <input type="text" class="form-control bigform" name="name" id="hashtag" value="" placeholder="Enter hashtag here..">
               <button id="submit" class="btn btn-success bigbtn">GO</button>
 			  </div>

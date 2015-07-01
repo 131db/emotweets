@@ -29,7 +29,7 @@
 
     $query = array(
       "q"=>$search,
-      //"lang"=>"en"
+      "lang"=>"en"
       );
 
     $results = search($query);
