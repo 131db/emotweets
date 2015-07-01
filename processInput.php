@@ -21,14 +21,14 @@
       return $toa->get('search/tweets', $query);
     }
 
-    //if(isset($_GET['q'])) {
-      //$search = $_GET('q');
-    //}else {
-      //$search = 'food';
-    //}
+    if(isset($_GET['q'])) {
+      $search = $_GET['q'];
+    }else {
+      $search = 'food';
+    }
 
     $query = array(
-      "q"=>"food",
+      "q"=>$search,
       //"lang"=>"en"
       );
 

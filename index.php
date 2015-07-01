@@ -8,29 +8,25 @@
 	  <link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
 
     <!-- SCRIPTS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-    <script type="text/javascript">
+    <script>
+    $(document).ready(function(){
 
-    $(function() {
+        $("button").click(function(){
+          var tag = $("#hashtag").val();
 
-      $("#submit").click(function() {
+            $.ajax({
 
-        var tag = $("#hashtag").val();
-
-        $.ajax({
-  url: "test.html",
-  cache: false,
-  success: function(html){
-    $(".twitterData").append(html);
-  }
-});
-
+              url: "processInput.php",
+              data: {q: tag},
+              success: function(result){
+                $("#div1").html(result);
+            }});
         });
-
-      });
-
+    });
     </script>
+
 
   </head>
   <body>
@@ -45,12 +41,13 @@
 
           <!-- START SEARCH PANEL -->
           <div class="searchPanel">
-            <form class="form-inline">
+            <!--<form class="form-inline">-->
               <div class="form-group bigGroup">
               <input type="text" class="form-control bigform" name="name" id="hashtag" value="" placeholder="Enter hashtag here..">
-              <button id="submit" type="submit" class="btn btn-success bigbtn">GO</button>
+              <button id="submit" class="btn btn-success bigbtn">GO</button>
 			  </div>
-            </form>
+            <!--</form>-->
+
           <!-- END SEARCH PANEL -->
           </div>
 
@@ -107,8 +104,9 @@
                       <span class="label label-success">Sentiment</span>
                     </td>
 
-    					      <td class="twitterData">
+    					      <td>
                       <!--<p>Loading Tweets......</p>-->
+                      <div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
 
     					      </td>
 

@@ -5,7 +5,11 @@
 <script>
 $(document).ready(function(){
     $("button").click(function(){
-        $.ajax({url: "processInput.php", success: function(result){
+
+        $.ajax({
+
+          url: "processInput.php",
+          success: function(result){
             $("#div1").html(result);
         }});
     });
