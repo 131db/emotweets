@@ -35,10 +35,20 @@
     $query = array(
       "q"=>$search,
       "lang"=>"en",
-      "count"=>5
+      "count"=>10
       );
 
     $results = search($query);
+
+    echo "<table class='table table-hover'>
+
+      <tr>
+        <th>Sentiment</th>
+        <th>Tweet</th>
+
+      </tr>
+
+      <tr>";
 
     foreach ($results->statuses as $result) {
 
@@ -52,15 +62,7 @@
         // echo compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized));
         // echo "<br><br>";
 
-        echo "<table class='table table-hover'>
 
-          <tr>
-            <th>Sentiment</th>
-            <th>Tweet</th>
-
-          </tr>
-
-          <tr>";
 
           echo "<td>
                 <br><br>";
@@ -80,12 +82,11 @@
 
 
             echo "</td>
-
-              </tr>
-
-        </table>";
+              </tr>";
 
     }
+
+    echo "</table>";
 
     //echo $results;
 
