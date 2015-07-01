@@ -8,36 +8,27 @@
 	  <link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
 
     <!-- SCRIPTS -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/
-libs/jquery/1.3.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     <script type="text/javascript">
 
     $(function() {
 
-      $(".submit").click(function() {
+      $("#submit").click(function() {
 
         var tag = $("#hashtag").val();
 
-        if(tag != '') {
+        $.ajax({
+  url: "test.html",
+  cache: false,
+  success: function(html){
+    $(".twitterData").append(html);
+  }
+});
 
-          $.ajax({
-
-            url:'processInput.php',
-            type: "GET",
-            data: {q: tag},
-            success: function(result) {
-              $('.twitterData').html(result);
-            }
-
-
-          });
-
-        }
+        });
 
       });
-
-    });
 
     </script>
 
@@ -57,7 +48,7 @@ libs/jquery/1.3.0/jquery.min.js"></script>
             <form class="form-inline">
               <div class="form-group bigGroup">
               <input type="text" class="form-control bigform" name="name" id="hashtag" value="" placeholder="Enter hashtag here..">
-              <button type="submit" class="btn btn-success bigbtn">GO</button>
+              <button id="submit" type="submit" class="btn btn-success bigbtn">GO</button>
 			  </div>
             </form>
           <!-- END SEARCH PANEL -->
@@ -117,7 +108,7 @@ libs/jquery/1.3.0/jquery.min.js"></script>
                     </td>
 
     					      <td class="twitterData">
-                      <p>Loading Tweets......</p>
+                      <!--<p>Loading Tweets......</p>-->
 
     					      </td>
 
