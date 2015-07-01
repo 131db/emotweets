@@ -1,11 +1,16 @@
 <html>
 
-<head></head>
+<head>
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="bootstrap/css/main.css" rel="stylesheet" type="text/css">
+</head>
 
 <body>
 
   <?php
 
+    require ('naivebayes.php');
+    require ('tokenize.php');
     require ('ouath/autoload.php');
     require_once ('ouath/src/TwitterOAuth.php');
     use Abraham\TwitterOAuth\TwitterOAuth;
@@ -29,14 +34,56 @@
 
     $query = array(
       "q"=>$search,
-      "lang"=>"en"
+      "lang"=>"en",
+      "count"=>5
       );
 
     $results = search($query);
 
     foreach ($results->statuses as $result) {
 
-      echo $result->user->screen_name . ": " . $result->text . "<br>";
+      // echo $result->user->screen_name . ": " . $result->text . "<br>";
+        $cleanedTweet = cleanTweets($result->text);
+        $tokenized = tok(strtolower($cleanedTweet)); // WORKS
+        $tokenized = iterateClean($tokenized);
+        $tokenized = checkNegation($tokenized);
+
+        // echo $result->text . "<br>";
+        // echo compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized));
+        // echo "<br><br>";
+
+        echo "<table class='table table-hover'>
+
+          <tr>
+            <th>Sentiment</th>
+            <th>Tweet</th>
+
+          </tr>
+
+          <tr>";
+
+          echo "<td>
+                <br><br>";
+          if(compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized)) == "Positive") {
+                echo "<span class='label label-success'>" . compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized)) . "</span>";
+              }else if (compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized)) == "Negative") {
+                echo "<span class='label label-danger'>" . compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized)) . "</span>";
+              } else if (compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized)) == "Neutral") {
+                echo "<span class='label label-default'>" . compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized)) . "</span>";
+              }
+            echo "</td>";
+
+            echo "<td>";
+
+                  echo "<h3>" . $result->user->screen_name . "</h3>";
+                  echo "<p>" . $result->text . "</p>";
+
+
+            echo "</td>
+
+              </tr>
+
+        </table>";
 
     }
 

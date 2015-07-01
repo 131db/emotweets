@@ -87,9 +87,9 @@
         <!-- START COL-MD-6 -->
         <div class="col-md-7">
           <!-- START TWITTER FEED -->
-          <div class="twitterFeed">
+          <div id="div1" class="twitterFeed">
             <!-- START TABLE -->
-            <table class="table table-hover">
+            <!-- <table class="table table-hover">
 
               <tr>
                 <th>Sentiment</th>
@@ -105,14 +105,14 @@
                     </td>
 
     					      <td>
-                      <!--<p>Loading Tweets......</p>-->
+
                       <div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
 
     					      </td>
 
     				      </tr>
 
-			      </table>
+			      </table> -->
             <!-- END TABLE -->
 
           </div>

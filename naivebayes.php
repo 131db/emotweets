@@ -1,7 +1,7 @@
 <?php
 
   require 'connect.php';
-  include 'tokenize.php';
+  // include 'tokenize.php';
 
 
   # NAIVE BAYES CLASSIFICATION IMPLEMENTATION
@@ -11,27 +11,27 @@
     P(class) = (tweets | class) / no. of tweets
     P(word | class) = count(word, class) + 1/ count(total words | class) + |V|
   */
-  $trueNegative = 0;
-  $truePositive = 0;
-
-  $query = "SELECT * FROM test_set";
-  $result = $con->query($query);
-
-  while($r = $result->fetch_assoc()) {
-
-    //echo $r['tweetID'] . "<br>"; // WORKS
-    $cleanedTweet = cleanTweets($r["tweet"]);
-    //echo $cleanedTweet . "<br>";
-    $tokenized = tok(strtolower($cleanedTweet)); // WORKS
-    $tokenized = iterateClean($tokenized);
-    $tokenized = checkNegation($tokenized);
-
-    if((compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized))) == $r["sentiment"]) {
-      if($r["sentiment"] == "Negative")
-        $trueNegative++;
-      else if($r["sentiment"] == "Positive")
-        $truePositive++;
-    }
+  // $trueNegative = 0;
+  // $truePositive = 0;
+  //
+  // $query = "SELECT * FROM test_set";
+  // $result = $con->query($query);
+  //
+  // while($r = $result->fetch_assoc()) {
+  //
+  //   //echo $r['tweetID'] . "<br>"; // WORKS
+  //   $cleanedTweet = cleanTweets($r["tweet"]);
+  //   //echo $cleanedTweet . "<br>";
+  //   $tokenized = tok(strtolower($cleanedTweet)); // WORKS
+  //   $tokenized = iterateClean($tokenized);
+  //   $tokenized = checkNegation($tokenized);
+  //
+  //   if((compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized))) == $r["sentiment"]) {
+  //     if($r["sentiment"] == "Negative")
+  //       $trueNegative++;
+  //     else if($r["sentiment"] == "Positive")
+  //       $truePositive++;
+  //   }
 
 
 
@@ -39,10 +39,10 @@
     //   echo $tokenized[$i];
     //   echo "<br>";
     // }
-  }
+  // }
 
-  echo "Negative: " . $trueNegative . "<br>";
-  echo "Positive: " . $truePositive . "<br>";
+  // echo "Negative: " . $trueNegative . "<br>";
+  // echo "Positive: " . $truePositive . "<br>";
 
 
   # function for calculating the class prior for positive/negative
@@ -112,8 +112,8 @@
         $row = $result->fetch_assoc();
 
         $wordProb = calcProb($row["positiveCount"], $totalWords["positive"], $vocabSize["total"]);
-        echo $word . " = ";
-        echo $wordProb . "<br>";
+        // echo $word . " = ";
+        // echo $wordProb . "<br>";
         $positiveProbability *= pow($wordProb, $count);
 
 
@@ -171,8 +171,8 @@
           $row = $result->fetch_assoc();
 
           $wordProb = calcProb($row["negativeCount"], $totalWords["negative"], $vocabSize["total"]);
-          echo $word . " = ";
-          echo $wordProb . "<br>";
+          // echo $word . " = ";
+          // echo $wordProb . "<br>";
           $negativeProbability *= pow($wordProb, $count);
 
         // }else {
