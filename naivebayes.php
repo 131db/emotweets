@@ -1,6 +1,7 @@
 <?php
 
   require 'connect.php';
+  include 'tokenize.php';
 
 
   # NAIVE BAYES CLASSIFICATION IMPLEMENTATION
@@ -10,6 +11,38 @@
     P(class) = (tweets | class) / no. of tweets
     P(word | class) = count(word, class) + 1/ count(total words | class) + |V|
   */
+  $trueNegative = 0;
+  $truePositive = 0;
+
+  $query = "SELECT * FROM test_set";
+  $result = $con->query($query);
+
+  while($r = $result->fetch_assoc()) {
+
+    //echo $r['tweetID'] . "<br>"; // WORKS
+    $cleanedTweet = cleanTweets($r["tweet"]);
+    //echo $cleanedTweet . "<br>";
+    $tokenized = tok(strtolower($cleanedTweet)); // WORKS
+    $tokenized = iterateClean($tokenized);
+    $tokenized = checkNegation($tokenized);
+
+    if((compareValues(calcPositiveNaiveBayes($tokenized), calcNegativeNaiveBayes($tokenized))) == $r["sentiment"]) {
+      if($r["sentiment"] == "Negative")
+        $trueNegative++;
+      else if($r["sentiment"] == "Positive")
+        $truePositive++;
+    }
+
+
+
+    // for($i = 0; $i < count($tokenized); $i++) {
+    //   echo $tokenized[$i];
+    //   echo "<br>";
+    // }
+  }
+
+  echo "Negative: " . $trueNegative . "<br>";
+  echo "Positive: " . $truePositive . "<br>";
 
 
   # function for calculating the class prior for positive/negative
@@ -29,7 +62,7 @@
   }
 
   # Calculates the probability of the tweet being classified as positive
-  function calcPositiveNaiveBayes() {
+  function calcPositiveNaiveBayes($tokenizedTweet) {
 
 
     global $con;
@@ -37,25 +70,25 @@
     $queryTotalTweets = 'SELECT count(tweet) AS "totalTweets" FROM tweets';
     $resultTotalTweets = $con->query($queryTotalTweets);
     $total = $resultTotalTweets->fetch_assoc();
-    echo $total["totalTweets"] . "<br>";
+    //echo $total["totalTweets"] . "<br>";
 
 
     $queryTotalPositive = 'SELECT count(sentiment) AS "positive" FROM tweets WHERE sentiment = "Positive"';
     $resultTotalPositive = $con->query($queryTotalPositive);
     $totalPositive = $resultTotalPositive->fetch_assoc();
-    echo $totalPositive["positive"] . "<br>";
+    //echo $totalPositive["positive"] . "<br>";
 
     $positiveProbability = calcPrior($totalPositive["positive"], $total["totalTweets"]);
-    echo $positiveProbability . "<br>";
+    //echo $positiveProbability . "<br>";
 
-    $tokenizedTweet = array(
-      "today",
-      "i",
-      "am",
-      "a",
-      "sewing",
-      "genius"
-    );
+    // $tokenizedTweet = array(
+    //   "today",
+    //   "i",
+    //   "am",
+    //   "a",
+    //   "sewing",
+    //   "genius"
+    // );
 
     $arrayCount = array_count_values($tokenizedTweet); # key value pair on how many times the word has appeared in the tweet.
 
@@ -85,38 +118,38 @@
 
 
     }
-    echo "Positive = " . $positiveProbability . "<br>";
+    //echo "Positive = " . $positiveProbability . "<br>";
     return $positiveProbability;
 
   }
 
   # Calculates the probability of the tweet being classified as negative
-  function calcNegativeNaiveBayes() {
+  function calcNegativeNaiveBayes($tokenizedTweet) {
 
     global $con;
 
     $queryTotalTweets = 'SELECT count(tweet) AS "totalTweets" FROM tweets';
     $resultTotalTweets = $con->query($queryTotalTweets);
     $total = $resultTotalTweets->fetch_assoc();
-    echo $total["totalTweets"] . "<br>";
+    //echo $total["totalTweets"] . "<br>";
 
 
     $queryTotalNegative = 'SELECT count(sentiment) AS "negative" FROM tweets WHERE sentiment = "Negative"';
     $resultTotalNegative = $con->query($queryTotalNegative);
     $totalNegative = $resultTotalNegative->fetch_assoc();
-    echo $totalNegative["negative"] . "<br>";
+    //echo $totalNegative["negative"] . "<br>";
 
     $negativeProbability = calcPrior($totalNegative["negative"], $total["totalTweets"]);
-    echo $negativeProbability . "<br>";
+    //echo $negativeProbability . "<br>";
 
-    $tokenizedTweet = array(
-      "today",
-      "i",
-      "am",
-      "a",
-      "sewing",
-      "genius"
-    );
+    // $tokenizedTweet = array(
+    //   "today",
+    //   "i",
+    //   "am",
+    //   "a",
+    //   "sewing",
+    //   "genius"
+    // );
 
     $arrayCount = array_count_values($tokenizedTweet); # key value pair on how many times the word has appeared in the tweet.
 
@@ -147,7 +180,7 @@
         // }
     }
 
-    echo "Negative = " . $negativeProbability;
+    //echo "Negative = " . $negativeProbability;
     return $negativeProbability;
 
   }
@@ -168,67 +201,6 @@
     }
 
   }
-
-
-  echo "<br>". compareValues(calcPositiveNaiveBayes(), calcNegativeNaiveBayes());
-
-
-
-
-
-
-  // function writeProb($file, $class, $prob) {
-  //
-  //   // write to file and add prob  or add to db
-  //
-  // }
-  //
-  // function getProbablities($file, $class) {
-  //
-  //   // read from file
-  //
-  //   $count = 0;
-  //
-  //   while() {
-  //
-  //     if($classFromFile == $class) {
-  //
-  //       if($wordFromFile == $word) {
-  //
-  //         $count++;
-  //
-  //       }
-  //
-  //     }
-  //
-  //     $prob = calcProb($count, 2500);
-  //
-  //     writeProb($file, $class, $prob);
-  //
-  //   }
-  //
-  // }
-  //
-  // function classifyNew($newTweet) {
-  //
-  //   $total = count($newTweet);
-  //
-  //   for($i = 0; $i < $total; $i++) {
-  //
-  //     // read from file
-  //
-  //     if($wordFromBank == $newTweet[$i]) {
-  //
-  //       // get prob from file
-  //
-  //     }
-  //     else {
-  //       // new instance
-  //     }
-  //
-  //   }
-  //
-  // }
 
 
 ?>
