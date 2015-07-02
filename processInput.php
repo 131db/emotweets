@@ -34,8 +34,8 @@
 
     $query = array(
       "q"=>$search,
-      "lang"=>"en",
-      "count"=>10
+      "lang"=>"en"
+      //"count"=>10
       );
 
     $results = search($query);
