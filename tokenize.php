@@ -22,23 +22,24 @@
   }
   */
 
-  // RETRIEVE TWEETS FROM DB
-  // $query = "SELECT * FROM test_set WHERE tweetID = 1";
-  // $result = $con->query($query);
-  //
-  // while($r = $result->fetch_assoc()) {
-  //
-  //   //echo $r['tweetID'] . "<br>"; // WORKS
-  //   $cleanedTweet = cleanTweets($r["tweet"]);
-  //
-  //   $tokenized = tok(strtolower($cleanedTweet)); // WORKS
-  //   $tokenized = iterateClean($tokenized);
-  //   $tokenized = checkNegation($tokenized);
-  //   //tallyStore($tokenized, $r['sentiment']);
-  //
-  //   //displayVocab();
-  //
-  // }
+  //RETRIEVE TWEETS FROM DB
+  $query = "SELECT * FROM test_set WHERE tweetID = 1";
+  $result = $con->query($query);
+
+  while($r = $result->fetch_assoc()) {
+
+    //echo $r['tweetID'] . "<br>"; // WORKS
+    $cleanedTweet = cleanTweets($r["tweet"]);
+    echo $cleanedTweet;
+    $tokenized = tok(strtolower($cleanedTweet)); // WORKS
+    $tokenized = iterateClean($tokenized);
+    $tokenized = checkNegation($tokenized);
+
+    //tallyStore($tokenized, $r['sentiment']);
+
+    //displayVocab();
+
+  }
   //echo "end";
 
   function getAllVocab() {
