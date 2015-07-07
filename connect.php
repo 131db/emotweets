@@ -4,7 +4,7 @@
 
 	$host = "localhost";
 	$username = "root";
-	$pw = "1234";
+	$pw = "";
 	$db = "emotweets";
 
 	$con = new mysqli($host, $username, $pw, $db);
